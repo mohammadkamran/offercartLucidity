@@ -5,8 +5,7 @@
     <classes>
       <class name="offercart.CartServiceOfferTest">
         <methods>
-          <include name="setup"/>
-          <include name="when_passed_Missing_UserSegment"/>
+          <include name="when_passed_invalid_resturant"/>
         </methods>
       </class> <!-- offercart.CartServiceOfferTest -->
     </classes>

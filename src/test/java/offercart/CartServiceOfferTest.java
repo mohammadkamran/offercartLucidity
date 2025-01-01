@@ -6,9 +6,16 @@
 package offercart;
 
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
+import io.restassured.path.json.config.JsonParserType;
+import io.restassured.response.Response;
+
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+
+import java.io.ObjectInputFilter.Status;
 
 public class CartServiceOfferTest {
 
@@ -61,7 +68,7 @@ public class CartServiceOfferTest {
 
 	}
 
-	// Test Case 4: Invalid User Segment
+	// Test Case 4: Invalid User Segment for api check
 
 	@Test
 	public void when_passed_Invalid_UserSegment() {
@@ -74,7 +81,7 @@ public class CartServiceOfferTest {
 
 	}
 
-	// Test Case 5: Missing User Segment
+	// Test Case 5: Missing User Segment for api check
 
 	@Test
 	public void when_passed_Missing_UserSegment() {
@@ -87,4 +94,20 @@ public class CartServiceOfferTest {
 
 	}
 
+	// Test Case 6: Restaurant doesn't exist for api check
+
+	@Test
+	public void when_passed_invalid_resturant() {
+
+		Response response = given().contentType(ContentType.JSON)
+				.body("{\"cart_value\":200,\"user_id\":\"ab\",\"restaurant_id\":1}").when().post(cartOffer_URL).then()
+				.extract().response();
+		String responseString = response.asString();
+		JsonPath jsonResponse = JsonPath.with(responseString);
+		String error = jsonResponse.getString("error");
+		int status = jsonResponse.getInt("status");
+		Assert.assertEquals(error, "Bad Request");
+		Assert.assertEquals(status, 400);
+
+	}
 }
