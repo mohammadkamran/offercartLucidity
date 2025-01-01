@@ -1,22 +1,17 @@
+/*
+ * Created By @Mohammad Kamran
+ * Date: 01-Jan-2024
+*/
+
 package offercart;
 
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 public class CartServiceOfferTest {
-
-	/*
-	 * @BeforeClass public void setup() { // Base URI for the mock server
-	 * RestAssured.baseURI = "http://localhost:9001"; }
-	 */
 
 	String userSegment_URL = "http://localhost:1080/api/v1/user_segment";
 	String resturantOffer_URL = "http://localhost:9001/api/v1/offer";
@@ -35,20 +30,19 @@ public class CartServiceOfferTest {
 
 		// Test: Apply offer
 		Response response = given().contentType(ContentType.JSON)
-				.body("{\"cart_value\":200,\"user_id\":1,\"restaurant_id\":1}").when().post(cartOffer_URL)
-				.then().assertThat().statusCode(200).body("cart_value", equalTo(190)).extract().response();
+				.body("{\"cart_value\":200,\"user_id\":1,\"restaurant_id\":1}").when().post(cartOffer_URL).then()
+				.assertThat().statusCode(200).body("cart_value", equalTo(190)).extract().response();
 		/*
 		 * Assert.assertEquals(response.statusCode(), 200);
 		 * Assert.assertEquals(response.jsonPath().getInt("cart_value"), 190);
 		 */
-		
-		
+
 	}
 
 	// Test Case 2: Flat X% Off
 
 	@Test
-	public void when_FlatX_Percent_Off_Applied() { 
+	public void when_FlatX_Percent_Off_Applied() {
 		// Mock: Fetch usersegment
 		given().queryParam("user_id", 1).when().get(userSegment_URL).then().assertThat().statusCode(200);
 
@@ -57,10 +51,10 @@ public class CartServiceOfferTest {
 				"{\"restaurant_id\":2,\"offer_type\":\"FLATPERCENT\",\"offer_value\":10,\"customer_segment\":[\"p1\"]}")
 				.when().post(resturantOffer_URL).then().statusCode(200).body("response_msg", equalTo("success"));
 
-		// Test: Apply offer 
-		Response response = given().contentType(ContentType.JSON).body("{\"cart_value\":200,\"user_id\":1,\"restaurant_id\":2}").when()
-				.post(cartOffer_URL).then().assertThat().statusCode(200).body("cart_value", equalTo(180))
-				.extract().response();
+		// Test: Apply offer
+		Response response = given().contentType(ContentType.JSON)
+				.body("{\"cart_value\":200,\"user_id\":1,\"restaurant_id\":2}").when().post(cartOffer_URL).then()
+				.assertThat().statusCode(200).body("cart_value", equalTo(180)).extract().response();
 
 	}
 
@@ -72,8 +66,8 @@ public class CartServiceOfferTest {
 
 		// Test: Apply offer without adding any offer for the user segment
 		Response response = given().contentType(ContentType.JSON)
-				.body("{\"cart_value\":200,\"user_id\":1,\"restaurant_id\":4}").when().post(cartOffer_URL)
-				.then().assertThat().statusCode(200).body("cart_value", equalTo(200)).extract().response();
+				.body("{\"cart_value\":200,\"user_id\":1,\"restaurant_id\":4}").when().post(cartOffer_URL).then()
+				.assertThat().statusCode(200).body("cart_value", equalTo(200)).extract().response();
 
 	}
 
@@ -85,8 +79,8 @@ public class CartServiceOfferTest {
 
 		// Test: Apply offer with no valid segment Response response =
 		given().contentType(ContentType.JSON).body("{\"cart_value\":200,\"user_id\":-5,\"restaurant_id\":1}").when()
-				.post(cartOffer_URL).then().assertThat().statusCode(200).body("cart_value", equalTo(200))
-				.extract().response();
+				.post(cartOffer_URL).then().assertThat().statusCode(200).body("cart_value", equalTo(200)).extract()
+				.response();
 
 	}
 
@@ -98,8 +92,8 @@ public class CartServiceOfferTest {
 
 		// Test: Apply offer without a valid user segment Response response =
 		given().contentType(ContentType.JSON).body("{\"cart_value\":200,\"user_id\":\"\",\"restaurant_id\":1}").when()
-				.post(cartOffer_URL).then().assertThat().statusCode(200).body("cart_value", equalTo(200))
-				.extract().response();
+				.post(cartOffer_URL).then().assertThat().statusCode(200).body("cart_value", equalTo(200)).extract()
+				.response();
 
 	}
 
