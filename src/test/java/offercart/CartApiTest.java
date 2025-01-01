@@ -12,7 +12,7 @@ public class CartApiTest {
     @BeforeClass
     public void setup() {
         // Set the base URI for Rest Assured
-        RestAssured.baseURI = "http://localhost:1080"; // Replace with your server's base URL
+        RestAssured.baseURI = "http://localhost:9001"; // Replace with your server's base URL
     }
     
     /**
