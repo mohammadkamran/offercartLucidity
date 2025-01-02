@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="CartOfferTest">
+<listeners>
+		<listener class-name="cartoffer.report.ExtentReportNG" />
+		<listener class-name="cartoffer.report.RealTimeReport" />
+	</listeners>
   <test thread-count="1" name="CartOfferAutomationTest">
     <classes>
       <class name="offercart.CartServiceOfferTest"/> 
